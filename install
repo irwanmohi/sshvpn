@@ -623,32 +623,32 @@ wget -q -O /usr/local/bin/menu https://raw.githubusercontent.com/cybertize/joker
 chmod +x /usr/local/bin/menu
 
 # ssh & ovpn
-wget -q -O /usr/local/bin/sshdovpn/trial_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/trial_user.sh
-wget -q -O /usr/local/bin/sshdovpn/create_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/create_user.sh
-wget -q -O /usr/local/bin/sshdovpn/renew_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/renew_user.sh
-wget -q -O /usr/local/bin/sshdovpn/login_users.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/login_users.sh
-wget -q -O /usr/local/bin/sshdovpn/lists_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/lists_user.sh
-wget -q -O /usr/local/bin/sshdovpn/limit_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/limit_user.sh
-wget -q -O /usr/local/bin/sshdovpn/kick_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/kick_user.sh
-wget -q -O /usr/local/bin/sshdovpn/kill_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/kill_user.sh
-wget -q -O /usr/local/bin/sshdovpn/unlock_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/unlock_user.sh
-wget -q -O /usr/local/bin/sshdovpn/lock_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/lock_user.sh
-wget -q -O /usr/local/bin/sshdovpn/delete_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/delete_user.sh
+wget -q -O /usr/local/bin/trial_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/trial_user.sh
+wget -q -O /usr/local/bin/create_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/create_user.sh
+wget -q -O /usr/local/bin/renew_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/renew_user.sh
+wget -q -O /usr/local/bin/login_users.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/login_users.sh
+wget -q -O /usr/local/bin/lists_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/lists_user.sh
+wget -q -O /usr/local/bin/limit_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/limit_user.sh
+wget -q -O /usr/local/bin/kick_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/kick_user.sh
+wget -q -O /usr/local/bin/kill_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/kill_user.sh
+wget -q -O /usr/local/bin/unlock_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/unlock_user.sh
+wget -q -O /usr/local/bin/lock_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/lock_user.sh
+wget -q -O /usr/local/bin/delete_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/delete_user.sh
 
 # service
-wget -q -O /usr/local/bin/service/check_service.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/service/check_service.sh
-wget -q -O /usr/local/bin/service/detail_service.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/service/detail_service.sh
-wget -q -O /usr/local/bin/service/ports_service.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/service/ports_service.sh
-wget -q -O /usr/local/bin/service/restart_service.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/service/restart_service.sh
+wget -q -O /usr/local/bin/check_service.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/service/check_service.sh
+wget -q -O /usr/local/bin/detail_service.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/service/detail_service.sh
+wget -q -O /usr/local/bin/ports_service.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/service/ports_service.sh
+wget -q -O /usr/local/bin/restart_service.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/service/restart_service.sh
 
 # server
-wget -q -O /usr/local/bin/server/domain_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/domain_server.sh
-wget -q -O /usr/local/bin/server/backup_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/backup_server.sh
-wget -q -O /usr/local/bin/server/restore_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/restore_server.sh
+wget -q -O /usr/local/bin/domain_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/domain_server.sh
+wget -q -O /usr/local/bin/backup_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/backup_server.sh
+wget -q -O /usr/local/bin/restore_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/restore_server.sh
 wget -q -O /usr/local/bin/speedtest https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py
 chmod +x /usr/local/bin/speedtest
-wget -q -O /usr/local/bin/server/detail_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/detail_server.sh
-wget -q -O /usr/local/bin/server/reboot_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/reboot_server.sh
+wget -q -O /usr/local/bin/detail_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/detail_server.sh
+wget -q -O /usr/local/bin/reboot_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/reboot_server.sh
 echo -e "${GREEN}[ Selesai ]${PLAIN}";
 
 echo -n "Memadam dan membersihkan fail... "; sleep 5
