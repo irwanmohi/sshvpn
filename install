@@ -437,33 +437,36 @@ worker_processes auto;
 pid /run/nginx.pid;
 
 events {
-    worker_connections 2048;
-    use epoll;
+    worker_connections 1024;
     multi_accept on;
 }
 
 http {
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    keepalive_timeout 65;
+    types_hash_max_size 2048;
+    server_tokens off;
+
+    server_names_hash_bucket_size 64;
+
     include /etc/nginx/mime.types;
     default_type application/octet-stream;
+
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_prefer_server_ciphers on;
 
     access_log /var/log/nginx/access.log;
     error_log /var/log/nginx/error.log;
 
-    aio threads;
-    sendfile on;
-    tcp_nopush on;
-    tcp_nodelay on;
-    server_tokens off;
-
     gzip on;
     gzip_vary on;
-    gzip_comp_level 6;
     gzip_proxied any;
-    gzip_types *;
-
-    add_header X-Frame-Options SAMEORIGIN;
-    add_header X-Content-Type-Options nosniff;
-    add_header X-XSS-Protection \"1; mode=block\";
+    gzip_comp_level 6;
+    # gzip_buffers 16 8k;
+    # gzip_http_version 1.1;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
 
     set_real_ip_from 173.245.48.0/20;
     set_real_ip_from 103.21.244.0/22;
@@ -480,7 +483,7 @@ http {
     set_real_ip_from 131.0.72.0/22;
     set_real_ip_from 104.16.0.0/13;
     set_real_ip_from 104.24.0.0/14;
-    
+
     set_real_ip_from 2400:cb00::/32;
     set_real_ip_from 2606:4700::/32;
     set_real_ip_from 2803:f800::/32;
@@ -488,9 +491,9 @@ http {
     set_real_ip_from 2405:8100::/32;
     set_real_ip_from 2a06:98c0::/29;
     set_real_ip_from 2c0f:f248::/32;
-    
+
     real_ip_header CF-Connecting-IP;
-    
+
     include /etc/nginx/conf.d/*.conf;
     include /etc/nginx/sites-enabled/*.conf;
 }" > /etc/nginx/nginx.conf
