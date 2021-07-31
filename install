@@ -577,9 +577,10 @@ wget -q -O /usr/local/bin/domain_server.sh https://raw.githubusercontent.com/cyb
 wget -q -O /usr/local/bin/backup_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/backup_server.sh
 wget -q -O /usr/local/bin/restore_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/restore_server.sh
 wget -q -O /usr/local/bin/speedtest https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py
-chmod +x /usr/local/bin/speedtest
 wget -q -O /usr/local/bin/detail_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/detail_server.sh
 wget -q -O /usr/local/bin/reboot_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/reboot_server.sh
+
+chmod +x /usr/local/bin/*
 echo -e "${GREEN}[ Selesai ]${PLAIN}";
 
 echo -n "Memadam dan membersihkan fail... "; sleep 5
