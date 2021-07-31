@@ -23,6 +23,7 @@ function webserv {
 
   zip /tmp/backup.zip /tmp/backup
   cp /tmp/backup.zip /var/www/html/backup.zip
+  rm -r /tmp/backup && rm -f /tmp/backup.zip
 
   echo -e "${IBGBLUE}            [ SERVER ] BACKUP            ${PLAIN}"
   echo -e "${YELLOW}Kami sudah selesai dengan proses sandaran.${PLAIN}"
