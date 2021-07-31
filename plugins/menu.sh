@@ -48,7 +48,7 @@ echo -e "[19] ${YELLOW}speed${PLAIN}      ${GREEN}Uji kelajuan pelayan${PLAIN}"
 echo -e "[20] ${YELLOW}detail${PLAIN}     ${GREEN}Perincian pelayan${PLAIN}"
 echo -e "[21] ${YELLOW}reboot${PLAIN}     ${GREEN}Mulakan semula pelayan${PLAIN}"
 echo ""
-echo -e "[00] ${YELLOW}exit${PLAIN}         ${GREEN}EXIT FROM MENU${PLAIN}"
+echo -e "[00] ${YELLOW}exit${PLAIN}       ${GREEN}EXIT FROM MENU${PLAIN}"
 echo -e "${IBGBLUE} COPYRIGHT JOKERVPN, POWERED BY CYBERTIZE. ${PLAIN}"
 read -p "Sila masukkan pilihan anda: " MENUCHOICE
 
