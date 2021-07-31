@@ -65,7 +65,7 @@ do
 done
 
 if [ $j -gt 0 ]; then
-  systemctl restart ssh > &>/dev/null
+  systemctl restart ssh &>/dev/null
   systemctl restart dropbear &>/dev/null
   j=0;
 fi
