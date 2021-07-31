@@ -246,7 +246,7 @@ username-as-common-name" > /etc/openvpn/server-tcp.conf
 echo "# OVPN SERVER-UDP CONFIG
 # ----------------------------
 setenv CLIENT_CERT 0
-setenv FRIENDLY_NAME \"jokervpn\"
+setenv FRIENDLY_NAME jokervpn
 port 994
 proto udp
 dev tun
@@ -323,7 +323,7 @@ auth none
 verb 3
 
 setenv CLIENT_CERT 0
-setenv FRIENDLY_NAME \"jokervpn\"
+setenv FRIENDLY_NAME jokervpn
 auth-user-pass
 
 ;http-proxy-retry
@@ -352,7 +352,7 @@ auth none
 verb 3
 
 setenv CLIENT_CERT 0
-setenv FRIENDLY_NAME \"jokervpn\"
+setenv FRIENDLY_NAME jokervpn
 auth-user-pass" > /etc/openvpn/client/client-udp.conf
 
 echo "" >> /etc/openvpn/client/client-udp.conf
@@ -376,7 +376,7 @@ auth none
 verb 3
 
 setenv CLIENT_CERT 0
-setenv FRIENDLY_NAME \"jokervpn\"
+setenv FRIENDLY_NAME jokervpn
 auth-user-pass" > /etc/openvpn/client/client-tls.conf
 
 echo "" >> /etc/openvpn/client/client-tls.conf
