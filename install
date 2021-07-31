@@ -275,6 +275,38 @@ mute 10
 plugin /usr/lib/x86_64-linux-gnu/openvpn/plugins/openvpn-plugin-auth-pam.so login
 username-as-common-name" > /etc/openvpn/server-udp.conf
 
+echo "# OVPN SERVER-TLS CONFIG
+# ----------------------------
+setenv CLIENT_CERT 0
+setenv FRIENDLY_NAME jokervpn
+port 587
+proto tcp
+dev tun
+
+ca /etc/openvpn/pki/ca.crt
+cert /etc/openvpn/pki/issued/server.crt
+key /etc/openvpn/pki/private/server.key
+dh /etc/openvpn/pki/dh.pem
+
+verify-client-cert none
+server 10.8.0.0 255.255.255.0
+ifconfig-pool-persist ipp.txt
+push \"redirect-gateway def1 bypass-dhcp\"
+push \"dhcp-option DNS 1.1.1.1\"
+push \"dhcp-option DNS 1.0.0.1\"
+keepalive 10 120
+cipher AES-256-CBC
+user nobody
+group nogroup
+persist-key
+persist-tun
+status /var/log/openvpn/status.log
+log /var/log/openvpn/access.log
+verb 3
+mute 10
+plugin /usr/lib/x86_64-linux-gnu/openvpn/plugins/openvpn-plugin-auth-pam.so login
+username-as-common-name" > /etc/openvpn/server-tls.conf
+
 echo "# OVPN CLIENT-TCP CONFIG
 # ----------------------------
 client
@@ -289,9 +321,10 @@ remote-cert-tls server
 cipher AES-256-CBC
 auth none
 verb 3
-auth-user-pass
+
 setenv CLIENT_CERT 0
 setenv FRIENDLY_NAME \"jokervpn\"
+auth-user-pass
 
 ;http-proxy-retry
 ;http-proxy $GETIP 8080
@@ -317,14 +350,39 @@ remote-cert-tls server
 cipher AES-256-CBC
 auth none
 verb 3
-auth-user-pass
+
 setenv CLIENT_CERT 0
-setenv FRIENDLY_NAME \"jokervpn\"" > /etc/openvpn/client/client-udp.conf
+setenv FRIENDLY_NAME \"jokervpn\"
+auth-user-pass" > /etc/openvpn/client/client-udp.conf
 
 echo "" >> /etc/openvpn/client/client-udp.conf
 echo "<ca>" >> /etc/openvpn/client/client-udp.conf
 cat /etc/openvpn/pki/ca.crt >> /etc/openvpn/client/client-udp.conf
 echo "</ca>" >> /etc/openvpn/client/client-udp.conf
+
+echo "# OVPN CLIENT-TLS CONFIG
+# ----------------------------
+client
+dev tun
+proto tcp
+remote $GETIP 587
+resolv-retry infinite
+nobind
+persist-key
+persist-tun
+remote-cert-tls server
+cipher AES-256-CBC
+auth none
+verb 3
+
+setenv CLIENT_CERT 0
+setenv FRIENDLY_NAME \"jokervpn\"
+auth-user-pass" > /etc/openvpn/client/client-tls.conf
+
+echo "" >> /etc/openvpn/client/client-tls.conf
+echo "<ca>" >> /etc/openvpn/client/client-tls.conf
+cat /etc/openvpn/pki/ca.crt >> /etc/openvpn/client/client-tls.conf
+echo "</ca>" >> /etc/openvpn/client/client-tls.conf
 
 sed -i 's/#AUTOSTART="all"/AUTOSTART="all"/g' /etc/default/openvpn
 systemctl start openvpn &>/dev/null
@@ -447,6 +505,7 @@ echo "<!doctype html>
 
 cp /etc/openvpn/client/client-tcp.conf /var/www/html/client-tcp.ovpn
 cp /etc/openvpn/client/client-udp.conf /var/www/html/client-udp.ovpn
+cp /etc/openvpn/client/client-tls.conf /var/www/html/client-tls.ovpn
 echo -e "${GREEN}[ Selesai ]${PLAIN}"; cd
 
 ###############################
