@@ -4,6 +4,7 @@
 
 Before you download or after downloading the script, you need to edit your server hostname first,
 by entering this command on your terminal:
+
 ``` bash
 nano /etc/hostname
 ```
@@ -38,17 +39,20 @@ _What the script will do?_
 3. install packages
 
 ### Packages list:
-- dropbear
-- openvpn
-- squid
-- stunnel
-- badvpn-udpgw
-- nginx
-- webmin
-- fail2ban
-- ddos-deflate
-- iptables
-- plugins
+| No.  | Packages      | Indexs                    |
+| ---- | :------------ | ------------------------- |
+| 01   | dropbear      | 1372(TCP), 2021(TLS)      |
+| 02   | openvpn       | 1194(TCP), 994(UDP)       |
+| 03   | squid         | 8080 & 8000               |
+| 04   | stunnel       | 2021<->1372 & 2022<->1194 |
+| 05   | badvpn-udpwgw | 127.0.0.1 7300            |
+| 06   | nginx         | 80(HTTP) & 443(HTTPS)     |
+| 07   | webmin        | 10000                     |
+| 08   | fail2ban      |                           |
+| 09   | ddos-deflate  |                           |
+| 10   | iptables      |                           |
+
+
 
 
 ### Plugins | Menu
