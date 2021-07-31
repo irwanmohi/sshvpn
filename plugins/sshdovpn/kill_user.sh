@@ -11,10 +11,6 @@ if [ "$EUID" -ne 0 ]; then
   echo -e "${RED}Skrip perlu dijalankan sebagai root!${PLAIN}"; exit 1
 fi
 
-if [[ -f /usr/local/bin/kill_user.sh ]]; then
-  cp /usr/share/plugins/sshdovpn/kill_user.sh /usr/local/bin/kill_user.sh
-  chmod +x /usr/local/bin/kill_user.sh
-fi
 echo -e "${IBGBLUE}      [ SSHD & OVPN ] KILL MULTI LOGIN      ${PLAIN}"
 echo -e "[01] ${GREEN}Tetapkan auto kill 2 Minutes${PLAIN}"
 echo -e "[02] ${GREEN}Tetapkan auto kill 5 Minutes${PLAIN}"
