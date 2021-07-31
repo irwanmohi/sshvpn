@@ -19,10 +19,7 @@ function webserv {
   cp /etc/group /tmp/backup/
   cp /etc/passwd /tmp/backup/
   cp /etc/shadow /tmp/backup/
-  cp /etc/gshadow /tmp/backup/
-  cp -r /etc/shadowsocks-libev /tmp/backup/
-  cp -r /etc/v2ray /tmp/backup/
-  cp -r /etc/wireguard /tmp/backup/
+  cp /etc/gshadow /tmp/backup
 
   zip /tmp/backup.zip /tmp/backup
   cp /tmp/backup.zip /var/www/html/backup.zip
