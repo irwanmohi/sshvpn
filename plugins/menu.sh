@@ -67,7 +67,7 @@ while true; do
       break
     ;;
     04|login )
-      bash /usr/local/bin/login_user.sh
+      bash /usr/local/bin/login_users.sh
       break
     ;;
     05|lists )
