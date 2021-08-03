@@ -4,7 +4,6 @@ clear
 RED="\e[31m";
 GREEN="\e[32m";
 YELLOW="\e[33m";
-IBGGREEN="\e[1;102m";
 PLAIN="\e[0m";
 
 GETIP=$( wget -qO- icanhazip.com );
@@ -33,104 +32,23 @@ echo ""
 
 echo -n "Kemas kini & pasang kebergantungan... ";
 apt-get -qq update &>/dev/null && apt-get -y -qq upgrade &>/dev/null
-apt-get -y -qq install curl git jq cmake automake unzip autoconf dnsutils qrencode libsodium* &>/dev/null
-apt-get -y -qq install libtool libssl-dev libpcre3-dev libev-dev asciidoc xmlto rng-tools &>/dev/null
+apt-get -y -qq install curl git cmake automake unzip &>/dev/null
 apt-get -y -qq install apt-transport-https software-properties-common build-essential &>/dev/null
 apt-get -qq update &>/dev/null && apt-get -y -qq upgrade &>/dev/null
 echo -e "${GREEN}[ Selesai ]${PLAIN}";
 
 timedatectl set-timezone Asia/Kuala_Lumpur
 
-systemctl stop rng-tools &>/dev/null
-echo "HRNGDEVICE=/dev/urandom" >> /etc/default/rng-tools
-systemctl start rng-tools &>/dev/null
-sleep 3
-
-echo "deb http://ftp.debian.org/debian buster-backports main
-deb-src http://ftp.debian.org/debian buster-backports main" >> /etc/apt/sources.list
-
-echo "kernel.printk = 4 4 1 7 
-kernel.panic = 10 
-kernel.sysrq = 0 
-kernel.shmmax = 4294967296 
-kernel.shmall = 4194304 
-kernel.core_uses_pid = 1 
-kernel.msgmnb = 65536 
-kernel.msgmax = 65536 
-vm.swappiness = 20 
-vm.dirty_ratio = 80 
-vm.dirty_background_ratio = 5 
-fs.file-max = 2097152 
-net.core.netdev_max_backlog = 262144 
-net.core.rmem_default = 31457280 
-net.core.rmem_max = 67108864 
-net.core.wmem_default = 31457280 
-net.core.wmem_max = 67108864 
-net.core.somaxconn = 65535 
-net.core.optmem_max = 25165824 
-net.ipv4.neigh.default.gc_thresh1 = 4096 
-net.ipv4.neigh.default.gc_thresh2 = 8192 
-net.ipv4.neigh.default.gc_thresh3 = 16384 
-net.ipv4.neigh.default.gc_interval = 5 
-net.ipv4.neigh.default.gc_stale_time = 120 
-net.ipv4.tcp_slow_start_after_idle = 0 
-net.ipv4.ip_local_port_range = 1024 65000 
-net.ipv4.ip_no_pmtu_disc = 1 
-net.ipv4.route.flush = 1 
-net.ipv4.route.max_size = 8048576 
-net.ipv4.icmp_echo_ignore_broadcasts = 1 
-net.ipv4.icmp_ignore_bogus_error_responses = 1 
-net.ipv4.tcp_congestion_control = htcp 
-net.ipv4.tcp_mem = 65536 131072 262144 
-net.ipv4.udp_mem = 65536 131072 262144 
-net.ipv4.tcp_rmem = 4096 87380 33554432 
-net.ipv4.udp_rmem_min = 16384 
-net.ipv4.tcp_wmem = 4096 87380 33554432 
-net.ipv4.udp_wmem_min = 16384 
-net.ipv4.tcp_max_tw_buckets = 1440000 
-net.ipv4.tcp_tw_reuse = 1 
-net.ipv4.tcp_max_orphans = 400000 
-net.ipv4.tcp_window_scaling = 1 
-net.ipv4.tcp_rfc1337 = 1 
-net.ipv4.tcp_syncookies = 1 
-net.ipv4.tcp_synack_retries = 1 
-net.ipv4.tcp_syn_retries = 2 
-net.ipv4.tcp_max_syn_backlog = 16384 
-net.ipv4.tcp_timestamps = 1 
-net.ipv4.tcp_sack = 1 
-net.ipv4.tcp_fack = 1 
-net.ipv4.tcp_ecn = 2 
-net.ipv4.tcp_fin_timeout = 10 
-net.ipv4.tcp_keepalive_time = 600 
-net.ipv4.tcp_keepalive_intvl = 60 
-net.ipv4.tcp_keepalive_probes = 10 
-net.ipv4.tcp_no_metrics_save = 1 
-net.ipv4.ip_forward = 1 
-net.ipv4.conf.all.accept_redirects = 0 
-net.ipv4.conf.all.send_redirects = 0 
-net.ipv4.conf.all.accept_source_route = 0 
-net.ipv4.conf.all.rp_filter = 1
-net.ipv6.conf.all.disable_ipv6 = 1
+echo "net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv4.ip_forward = 1
 net.core.default_qdisc = fq
 net.ipv4.tcp_fastopen = 3
-net.ipv4.tcp_mtu_probing = 1
 net.ipv4.tcp_congestion_control = bbr
 net.ipv4.tcp_congestion_control = hybla" > /etc/sysctl.conf
 sysctl -p &>/dev/null
 
 echo "/bin/false
 /usr/bin/false" >> /etc/shells
-
-echo '# ~/.profile: executed by Bourne-compatible login shells.
-if [ "$BASH" ]; then
-  if [ -f ~/.bashrc ]; then
-    . ~/.bashrc
-  fi
-fi
-
-mesg n || true
-ulimit -n 51200' > ~/.profile
-source ~/.profile
 
 echo '</br>
 =========================================</b><br>
@@ -213,8 +131,6 @@ systemctl disable openvpn &>/dev/null
 
 echo "# OVPN SERVER-TCP CONFIG
 # ----------------------------
-setenv CLIENT_CERT 0
-setenv FRIENDLY_NAME jokervpn
 port 1194
 proto tcp
 dev tun
@@ -223,8 +139,8 @@ ca /etc/openvpn/pki/ca.crt
 cert /etc/openvpn/pki/issued/server.crt
 key /etc/openvpn/pki/private/server.key
 dh /etc/openvpn/pki/dh.pem
+tls-key /etc/openvpn/pki/ta.key
 
-verify-client-cert none
 server 10.8.0.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 push \"redirect-gateway def1 bypass-dhcp\"
@@ -245,8 +161,6 @@ username-as-common-name" > /etc/openvpn/server-tcp.conf
 
 echo "# OVPN SERVER-UDP CONFIG
 # ----------------------------
-setenv CLIENT_CERT 0
-setenv FRIENDLY_NAME jokervpn
 port 994
 proto udp
 dev tun
@@ -255,8 +169,8 @@ ca /etc/openvpn/pki/ca.crt
 cert /etc/openvpn/pki/issued/server.crt
 key /etc/openvpn/pki/private/server.key
 dh /etc/openvpn/pki/dh.pem
+tls-key /etc/openvpn/pki/ta.key
 
-verify-client-cert none
 server 10.8.0.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 push \"redirect-gateway def1 bypass-dhcp\"
@@ -277,24 +191,27 @@ username-as-common-name" > /etc/openvpn/server-udp.conf
 
 echo "# OVPN SERVER-TLS CONFIG
 # ----------------------------
-setenv CLIENT_CERT 0
-setenv FRIENDLY_NAME jokervpn
 port 587
 proto tcp
 dev tun
+tun-mtu 1500
+tun-mtu-extra 32
+mssfix 1450
 
 ca /etc/openvpn/pki/ca.crt
 cert /etc/openvpn/pki/issued/server.crt
 key /etc/openvpn/pki/private/server.key
 dh /etc/openvpn/pki/dh.pem
+tls-key /etc/openvpn/pki/ta.key
 
-verify-client-cert none
 server 10.8.0.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 push \"redirect-gateway def1 bypass-dhcp\"
+push \"route ${GETIP} 255.255.255.255 net_gateway\"
 push \"dhcp-option DNS 1.1.1.1\"
 push \"dhcp-option DNS 1.0.0.1\"
-keepalive 10 120
+keepalive 5 30
+reneg-sec 0
 cipher AES-256-CBC
 user nobody
 group nogroup
@@ -305,10 +222,11 @@ log /var/log/openvpn/access.log
 verb 3
 mute 10
 plugin /usr/lib/x86_64-linux-gnu/openvpn/plugins/openvpn-plugin-auth-pam.so login
-username-as-common-name" > /etc/openvpn/server-tls.conf
+username-as-common-name" > /etc/openvpn/server-tcp.conf
 
 echo "# OVPN CLIENT-TCP CONFIG
 # ----------------------------
+setenv FRIENDLY_NAME jokervpn
 client
 dev tun
 proto tcp
@@ -321,9 +239,6 @@ remote-cert-tls server
 cipher AES-256-CBC
 auth none
 verb 3
-
-setenv CLIENT_CERT 0
-setenv FRIENDLY_NAME jokervpn
 auth-user-pass
 
 ;http-proxy-retry
@@ -338,6 +253,7 @@ echo "</ca>" >> /etc/openvpn/client/client-tcp.conf
 
 echo "# OVPN CLIENT-UDP CONFIG
 # ----------------------------
+setenv FRIENDLY_NAME jokervpn
 client
 dev tun
 proto udp
@@ -350,9 +266,6 @@ remote-cert-tls server
 cipher AES-256-CBC
 auth none
 verb 3
-
-setenv CLIENT_CERT 0
-setenv FRIENDLY_NAME jokervpn
 auth-user-pass" > /etc/openvpn/client/client-udp.conf
 
 echo "" >> /etc/openvpn/client/client-udp.conf
@@ -362,6 +275,7 @@ echo "</ca>" >> /etc/openvpn/client/client-udp.conf
 
 echo "# OVPN CLIENT-TLS CONFIG
 # ----------------------------
+setenv FRIENDLY_NAME jokervpn
 client
 dev tun
 proto tcp
@@ -372,11 +286,11 @@ persist-key
 persist-tun
 remote-cert-tls server
 cipher AES-256-CBC
+tls-client
+tls-version-min 1.2
+tls-chiper TLS-ECDHE-ECDSA-WITH-128-GCM-SHA256
 auth none
 verb 3
-
-setenv CLIENT_CERT 0
-setenv FRIENDLY_NAME jokervpn
 auth-user-pass" > /etc/openvpn/client/client-tls.conf
 
 echo "" >> /etc/openvpn/client/client-tls.conf
@@ -483,7 +397,10 @@ echo -e "${GREEN}[ Selesai ]${PLAIN}"; cd
 # INSTALL # NGINX PACKAGE
 #################################
 echo -n "Pasang pakej nginx... "; sleep 3
+[[ ! -d /var/www/cybertize.tk/public ]] && mkdir -p /var/www/cybertize.tk/public
 apt-get -y -qq install nginx &>/dev/null
+cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
+
 echo "<!doctype html>
 <html lang=\"en\">
   <head>
@@ -501,7 +418,7 @@ echo "<!doctype html>
 
     <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js\"></script>
   </body>
-</html>" > /var/www/html/index.nginx-debian.html
+</html>" > /var/www/cybertize.tk/public/index.html
 
 cp /etc/openvpn/client/client-tcp.conf /var/www/html/client-tcp.ovpn
 cp /etc/openvpn/client/client-udp.conf /var/www/html/client-udp.ovpn
@@ -636,10 +553,9 @@ wget -q -O /usr/local/bin/domain_server.sh https://raw.githubusercontent.com/cyb
 wget -q -O /usr/local/bin/backup_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/backup_server.sh
 wget -q -O /usr/local/bin/restore_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/restore_server.sh
 wget -q -O /usr/local/bin/speedtest https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py
+chmod +x /usr/local/bin/speedtest
 wget -q -O /usr/local/bin/detail_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/detail_server.sh
 wget -q -O /usr/local/bin/reboot_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/reboot_server.sh
-
-chmod +x /usr/local/bin/*
 echo -e "${GREEN}[ Selesai ]${PLAIN}";
 
 echo -n "Memadam dan membersihkan fail... "; sleep 5
