@@ -533,7 +533,7 @@ chmod +x /usr/local/bin/menu
 wget -q -O /usr/local/bin/trial_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/trial_user.sh
 wget -q -O /usr/local/bin/create_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/create_user.sh
 wget -q -O /usr/local/bin/renew_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/renew_user.sh
-wget -q -O /usr/local/bin/login_users.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/login_users.sh
+wget -q -O /usr/local/bin/login_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/login_user.sh
 wget -q -O /usr/local/bin/lists_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/lists_user.sh
 wget -q -O /usr/local/bin/limit_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/limit_user.sh
 wget -q -O /usr/local/bin/kick_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/kick_user.sh
