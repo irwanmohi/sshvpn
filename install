@@ -120,12 +120,13 @@ cd /usr/share/easy-rsa
 ./easyrsa --batch init-pki &>/dev/null
 ./easyrsa --batch build-ca nopass &>/dev/null
 ./easyrsa --batch gen-dh &>/dev/null
+openvpn --genkey --secret /usr/share/easy-rsa/pki/ta.key &>/dev/null
 ./easyrsa --batch build-server-full server nopass &>/dev/null
+./easyrsa --batch build-client-full client nopass &>/dev/null
 cp -R /usr/share/easy-rsa/pki /etc/openvpn/ && cd
 
-if [[ -d /etc/openvpn/server ]]; then
-  rm -d /etc/openvpn/server &>/dev/null
-fi
+[[ -d /etc/openvpn/server ]] && rm -d /etc/openvpn/server
+[[ -d /etc/openvpn/client ]] && rm -d /etc/openvpn/client
 systemctl stop openvpn &>/dev/null
 systemctl disable openvpn &>/dev/null
 
@@ -244,12 +245,24 @@ auth-user-pass
 ;http-proxy-retry
 ;http-proxy $GETIP 8080
 ;http-proxy-option CUSTOM-HEADER Protocol HTTP/1.1
-;http-proxy-option CUSTOM-HEADER Host HOSTNAME" > /etc/openvpn/client/client-tcp.conf
+;http-proxy-option CUSTOM-HEADER Host HOSTNAME" > /etc/openvpn/client-tcp.conf
 
-echo "" >> /etc/openvpn/client/client-tcp.conf
-echo "<ca>" >> /etc/openvpn/client/client-tcp.conf
-cat /etc/openvpn/pki/ca.crt >> /etc/openvpn/client/client-tcp.conf
-echo "</ca>" >> /etc/openvpn/client/client-tcp.conf
+echo "" >> /etc/openvpn/client-tcp.conf
+echo "<ca>" >> /etc/openvpn/client-tcp.conf
+cat /etc/openvpn/pki/ca.crt >> /etc/openvpn/client-tcp.conf
+echo "</ca>" >> /etc/openvpn/client-tcp.conf
+
+echo "<cert>" >> /etc/openvpn/client-tcp.conf
+cat /etc/openvpn/pki/ca.crt >> /etc/openvpn/client-tcp.conf
+echo "</cert>" >> /etc/openvpn/client-tcp.conf
+
+echo "<key>" >> /etc/openvpn/client-tcp.conf
+cat /etc/openvpn/pki/ca.crt >> /etc/openvpn/client-tcp.conf
+echo "</key>" >> /etc/openvpn/client-tcp.conf
+
+echo "<tls-auth>" >> /etc/openvpn/client-tcp.conf
+cat /etc/openvpn/pki/ta.key >> /etc/openvpn/client-tcp.conf
+echo "</tls-auth>" >> /etc/openvpn/client-tcp.conf
 
 echo "# OVPN CLIENT-UDP CONFIG
 # ----------------------------
@@ -266,12 +279,24 @@ remote-cert-tls server
 cipher AES-256-CBC
 auth none
 verb 3
-auth-user-pass" > /etc/openvpn/client/client-udp.conf
+auth-user-pass" > /etc/openvpn/client-udp.conf
 
-echo "" >> /etc/openvpn/client/client-udp.conf
-echo "<ca>" >> /etc/openvpn/client/client-udp.conf
-cat /etc/openvpn/pki/ca.crt >> /etc/openvpn/client/client-udp.conf
-echo "</ca>" >> /etc/openvpn/client/client-udp.conf
+echo "" >> /etc/openvpn/client-udp.conf
+echo "<ca>" >> /etc/openvpn/client-udp.conf
+cat /etc/openvpn/pki/ca.crt >> /etc/openvpn/client-udp.conf
+echo "</ca>" >> /etc/openvpn/client-udp.conf
+
+echo "<cert>" >> /etc/openvpn/client-udp.conf
+cat /etc/openvpn/pki/ca.crt >> /etc/openvpn/client-udp.conf
+echo "</cert>" >> /etc/openvpn/client-udp.conf
+
+echo "<key>" >> /etc/openvpn/client-udp.conf
+cat /etc/openvpn/pki/ca.crt >> /etc/openvpn/client-udp.conf
+echo "</key>" >> /etc/openvpn/client-udp.conf
+
+echo "<tls-auth>" >> /etc/openvpn/client-udp.conf
+cat /etc/openvpn/pki/ta.key >> /etc/openvpn/client-udp.conf
+echo "</tls-auth>" >> /etc/openvpn/client-udp.conf
 
 echo "# OVPN CLIENT-TLS CONFIG
 # ----------------------------
@@ -291,12 +316,24 @@ tls-version-min 1.2
 tls-chiper TLS-ECDHE-ECDSA-WITH-128-GCM-SHA256
 auth none
 verb 3
-auth-user-pass" > /etc/openvpn/client/client-tls.conf
+auth-user-pass" > /etc/openvpn/client-tls.conf
 
-echo "" >> /etc/openvpn/client/client-tls.conf
-echo "<ca>" >> /etc/openvpn/client/client-tls.conf
-cat /etc/openvpn/pki/ca.crt >> /etc/openvpn/client/client-tls.conf
-echo "</ca>" >> /etc/openvpn/client/client-tls.conf
+echo "" >> /etc/openvpn/client-tls.conf
+echo "<ca>" >> /etc/openvpn/client-tls.conf
+cat /etc/openvpn/pki/ca.crt >> /etc/openvpn/client-tls.conf
+echo "</ca>" >> /etc/openvpn/client-tls.conf
+
+echo "<cert>" >> /etc/openvpn/client-tls.conf
+cat /etc/openvpn/pki/client.crt >> /etc/openvpn/client-tls.conf
+echo "</cert>" >> /etc/openvpn/client-tls.conf
+
+echo "<key>" >> /etc/openvpn/client-tls.conf
+cat /etc/openvpn/pki/client.key >> /etc/openvpn/client-tls.conf
+echo "</key>" >> /etc/openvpn/client-tls.conf
+
+echo "<tls-auth>" >> /etc/openvpn/client-tls.conf
+cat /etc/openvpn/pki/ta.key >> /etc/openvpn/client-tls.conf
+echo "</tls-auth>" >> /etc/openvpn/client-tls.conf
 
 sed -i 's/#AUTOSTART="all"/AUTOSTART="all"/g' /etc/default/openvpn
 systemctl start openvpn &>/dev/null
@@ -533,7 +570,7 @@ chmod +x /usr/local/bin/menu
 wget -q -O /usr/local/bin/trial_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/trial_user.sh
 wget -q -O /usr/local/bin/create_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/create_user.sh
 wget -q -O /usr/local/bin/renew_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/renew_user.sh
-wget -q -O /usr/local/bin/login_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/login_user.sh
+wget -q -O /usr/local/bin/login_users.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/login_users.sh
 wget -q -O /usr/local/bin/lists_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/lists_user.sh
 wget -q -O /usr/local/bin/limit_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/limit_user.sh
 wget -q -O /usr/local/bin/kick_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/kick_user.sh
