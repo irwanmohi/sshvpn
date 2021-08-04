@@ -66,9 +66,9 @@ echo '</br>
 =========================================
 </br>' > /etc/issue.net
 
-#################################
-# INSTALL # BADVPN PACKAGE
-#################################
+############################
+# INSTALL # BADVPN PACKAGE #
+############################
 echo -n "Pasang pakej badvpn-udpgw... "; sleep 3
 apt-get -y -qq install curl cmake make &>/dev/null
 wget -q "https://github.com/ambrop72/badvpn/archive/refs/tags/1.999.130.tar.gz"
@@ -96,9 +96,9 @@ systemctl start badvpn-udpgw &>/dev/null
 systemctl enable badvpn-udpgw &>/dev/null
 echo -e "${GREEN}[ Selesai ]${PLAIN}"; cd
 
-#################################
-# INSTALL # DROPBEAR PACKAGE
-#################################
+##############################
+# INSTALL # DROPBEAR PACKAGE #
+##############################
 echo -n "Pasang pakej dropbear... "; sleep 3
 DEBIAN_FRONTEND=noninteractive apt-get -y -qq install dropbear &>/dev/null
 echo 'NO_START=0
@@ -111,9 +111,9 @@ DROPBEAR_ECDSAKEY="/etc/dropbear/dropbear_ecdsa_host_key"
 DROPBEAR_RECEIVE_WINDOW=65536' > /etc/default/dropbear
 echo -e "${GREEN}[ Selesai ]${PLAIN}"; cd
 
-#################################
-# INSTALL # OPENVPN PACKAGE
-#################################
+#############################
+# INSTALL # OPENVPN PACKAGE #
+#############################
 echo -n "Pasang pakej openvpn... ";
 apt-get -y -qq install openvpn &>/dev/null
 cd /usr/share/easy-rsa
@@ -253,11 +253,11 @@ cat /etc/openvpn/pki/ca.crt >> /etc/openvpn/client-tcp.conf
 echo "</ca>" >> /etc/openvpn/client-tcp.conf
 
 echo "<cert>" >> /etc/openvpn/client-tcp.conf
-cat /etc/openvpn/pki/ca.crt >> /etc/openvpn/client-tcp.conf
+cat /etc/openvpn/pki/issued/client.crt >> /etc/openvpn/client-tcp.conf
 echo "</cert>" >> /etc/openvpn/client-tcp.conf
 
 echo "<key>" >> /etc/openvpn/client-tcp.conf
-cat /etc/openvpn/pki/ca.crt >> /etc/openvpn/client-tcp.conf
+cat /etc/openvpn/pki/private/client.key >> /etc/openvpn/client-tcp.conf
 echo "</key>" >> /etc/openvpn/client-tcp.conf
 
 echo "<tls-auth>" >> /etc/openvpn/client-tcp.conf
@@ -287,11 +287,11 @@ cat /etc/openvpn/pki/ca.crt >> /etc/openvpn/client-udp.conf
 echo "</ca>" >> /etc/openvpn/client-udp.conf
 
 echo "<cert>" >> /etc/openvpn/client-udp.conf
-cat /etc/openvpn/pki/ca.crt >> /etc/openvpn/client-udp.conf
+cat /etc/openvpn/pki/issued/client.crt >> /etc/openvpn/client-udp.conf
 echo "</cert>" >> /etc/openvpn/client-udp.conf
 
 echo "<key>" >> /etc/openvpn/client-udp.conf
-cat /etc/openvpn/pki/ca.crt >> /etc/openvpn/client-udp.conf
+cat /etc/openvpn/pki/private/client.key >> /etc/openvpn/client-udp.conf
 echo "</key>" >> /etc/openvpn/client-udp.conf
 
 echo "<tls-auth>" >> /etc/openvpn/client-udp.conf
@@ -324,11 +324,11 @@ cat /etc/openvpn/pki/ca.crt >> /etc/openvpn/client-tls.conf
 echo "</ca>" >> /etc/openvpn/client-tls.conf
 
 echo "<cert>" >> /etc/openvpn/client-tls.conf
-cat /etc/openvpn/pki/client.crt >> /etc/openvpn/client-tls.conf
+cat /etc/openvpn/pki/issued/client.crt >> /etc/openvpn/client-tls.conf
 echo "</cert>" >> /etc/openvpn/client-tls.conf
 
 echo "<key>" >> /etc/openvpn/client-tls.conf
-cat /etc/openvpn/pki/client.key >> /etc/openvpn/client-tls.conf
+cat /etc/openvpn/pki/private/client.key >> /etc/openvpn/client-tls.conf
 echo "</key>" >> /etc/openvpn/client-tls.conf
 
 echo "<tls-auth>" >> /etc/openvpn/client-tls.conf
@@ -340,9 +340,9 @@ systemctl start openvpn &>/dev/null
 systemctl enable openvpn &>/dev/null
 echo -e "${GREEN}[ Selesai ]${PLAIN}"; cd
 
-#################################
-# INSTALL # SQUID3 PACKAGE
-#################################
+############################
+# INSTALL # SQUID3 PACKAGE #
+############################
 echo -n "Pasang pakej squid... "; sleep 3
 apt-get -y -qq install squid &>/dev/null
 echo "# CYBERTIZE SQUID CONFIG
@@ -392,9 +392,9 @@ refresh_pattern . 0	20%	4320
 visible_hostname proxy.jokervpn.com" > /etc/squid/squid.conf
 echo -e "${GREEN}[ Selesai ]${PLAIN}"; cd
 
-#################################
-# INSTALL # STUNNEL4 PACKAGE
-#################################
+##############################
+# INSTALL # STUNNEL4 PACKAGE #
+##############################
 echo -n "Pasang pakej stunnel... "; sleep 3
 apt-get -y -qq install stunnel &>/dev/null
 if [[ ! -d /etc/stunnel/pki ]]; then
@@ -457,9 +457,9 @@ echo "<!doctype html>
   </body>
 </html>" > /var/www/cybertize.tk/public/index.html
 
-cp /etc/openvpn/client/client-tcp.conf /var/www/html/client-tcp.ovpn
-cp /etc/openvpn/client/client-udp.conf /var/www/html/client-udp.ovpn
-cp /etc/openvpn/client/client-tls.conf /var/www/html/client-tls.ovpn
+cp /etc/openvpn/client-tcp.conf /var/www/html/client-tcp.ovpn
+cp /etc/openvpn/client-udp.conf /var/www/html/client-udp.ovpn
+cp /etc/openvpn/client-tls.conf /var/www/html/client-tls.ovpn
 echo -e "${GREEN}[ Selesai ]${PLAIN}"; cd
 
 ###############################
@@ -491,12 +491,12 @@ apt-get -y -qq install grepcidr &>/dev/null
 wget -O ddos.zip https://github.com/jgmdev/ddos-deflate/archive/master.zip &>/dev/null
 unzip ddos.zip &>/dev/null
 cd ddos-deflate-master
-./install.sh &>/dev/null
+./install.sh &>/dev/null && sleep 1 && \n
 echo -e "${GREEN}[ Selesai ]${PLAIN}"; cd
 
-#################################
-# INSTALL # IPTABLES PACKAGE
-#################################
+##############################
+# INSTALL # IPTABLES PACKAGE #
+##############################
 echo -n "Pasang pakej iptables... "; sleep 3
 apt-get -y -qq netfilter-persistent &>/dev/null
 
@@ -559,9 +559,9 @@ echo "@reboot root iptables-restore < /etc/firewall.rules" >> /etc/crontab
 echo -e "${GREEN}[ Selesai ]${PLAIN}";
 cd
 
-#################################
-# PLUGINS MENU
-#################################
+################
+# PLUGINS MENU #
+################
 echo -n "Muat turun & aktifkan plugins... ";
 wget -q -O /usr/local/bin/menu https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/menu.sh
 chmod +x /usr/local/bin/menu
