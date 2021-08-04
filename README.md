@@ -5,27 +5,31 @@
 Before you download or after downloading the script, you need to edit your server hostname first,
 by entering this command on your terminal:
 
-``` bash
+```sh
 nano /etc/hostname
 ```
 or the easyway to change hostname by run this command:
-``` bash
+```sh
 echo 'jokervpn.com' | tee /etc/hostname
 echo 'jokervpn.com' > /etc/hostname
 ```
 
 to check hostname enter this command on your terminal:
-``` bash
+```sh
 cat /etc/hostname
 ```
 
 the script will read hostname as your default host/domain, so you need to edit and set hostname on your server. If you done with that, you can run the script by entering this command:
-``` bash
+```sh
+# link script
+wget https://raw.githubusercontent.com/cybertize/jokervpn/default/install
+
+# run script
 chmod +x install && ./install
 ```
 
 the easyway to run bash script by doing it this way, by entering this command:
-```bash
+```sh
 bash install
 ```
 
