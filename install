@@ -140,7 +140,7 @@ ca /etc/openvpn/pki/ca.crt
 cert /etc/openvpn/pki/issued/server.crt
 key /etc/openvpn/pki/private/server.key
 dh /etc/openvpn/pki/dh.pem
-tls-key /etc/openvpn/pki/ta.key
+tls-auth /etc/openvpn/pki/ta.key
 
 server 10.8.0.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
@@ -170,7 +170,7 @@ ca /etc/openvpn/pki/ca.crt
 cert /etc/openvpn/pki/issued/server.crt
 key /etc/openvpn/pki/private/server.key
 dh /etc/openvpn/pki/dh.pem
-tls-key /etc/openvpn/pki/ta.key
+tls-auth /etc/openvpn/pki/ta.key
 
 server 10.8.0.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
@@ -203,7 +203,7 @@ ca /etc/openvpn/pki/ca.crt
 cert /etc/openvpn/pki/issued/server.crt
 key /etc/openvpn/pki/private/server.key
 dh /etc/openvpn/pki/dh.pem
-tls-key /etc/openvpn/pki/ta.key
+tls-auth /etc/openvpn/pki/ta.key
 
 server 10.8.0.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
