@@ -39,8 +39,7 @@ echo -e "${GREEN}[ Selesai ]${PLAIN}";
 
 timedatectl set-timezone Asia/Kuala_Lumpur
 
-echo "net.ipv6.conf.all.disable_ipv6 = 1
-net.ipv4.ip_forward = 1
+echo "net.ipv4.ip_forward = 1
 net.core.default_qdisc = fq
 net.ipv4.tcp_fastopen = 3
 net.ipv4.tcp_congestion_control = bbr
@@ -97,6 +96,44 @@ systemctl enable badvpn-udpgw &>/dev/null
 echo -e "${GREEN}[ Selesai ]${PLAIN}"; cd
 
 ##############################
+# INSTALL # STUNNEL4 PACKAGE #
+##############################
+echo -n "Pasang pakej stunnel... "; sleep 3
+apt-get -y -qq install stunnel &>/dev/null
+if [[ ! -d /etc/stunnel/pki ]]; then
+  mkdir /etc/stunnel/pki
+fi
+
+openssl req -new -x509 -days 720 -nodes \
+-subj '/C=DO/ST=VPS/L=Debian/O="Cybertize"/OU="Joker VPN"/CN=jokervpn.com' \
+-out /etc/stunnel/pki/stunnel.pem -keyout /etc/stunnel/pki/stunnel.pem &>/dev/null
+
+# /etc/stunnel/stunnel.conf
+echo "pid = /var/run/stunnel4/stunnel.pid
+output = /var/log/stunnel4/stunnel.log
+cert = /etc/stunnel/pki/stunnel.pem
+debug = 4
+client = no
+socket = l:TCP_NODELAY=1
+socket = r:TCP_NODELAY=1
+
+[dropbear]
+accept = 443
+connect = 127.0.0.1:143
+
+[openvpn]
+accept = 587
+connect = 127.0.0.1:1194" > /etc/stunnel/stunnel.conf
+
+# /etc/default/stunnel
+echo 'ENABLED=1
+FILES="/etc/stunnel/*.conf"
+OPTIONS=""
+PPP_RESTART=0
+RLIMITS=""' > /etc/default/stunnel4
+echo -e "${GREEN}[ Selesai ]${PLAIN}"; cd
+
+##############################
 # INSTALL # DROPBEAR PACKAGE #
 ##############################
 echo -n "Pasang pakej dropbear... "; sleep 3
@@ -120,9 +157,9 @@ cd /usr/share/easy-rsa
 ./easyrsa --batch init-pki &>/dev/null
 ./easyrsa --batch build-ca nopass &>/dev/null
 ./easyrsa --batch gen-dh &>/dev/null
-openvpn --genkey --secret /usr/share/easy-rsa/pki/ta.key &>/dev/null
 ./easyrsa --batch build-server-full server nopass &>/dev/null
 ./easyrsa --batch build-client-full client nopass &>/dev/null
+openvpn --genkey --secret /usr/share/easy-rsa/pki/ta.key &>/dev/null
 cp -R /usr/share/easy-rsa/pki /etc/openvpn/ && cd
 
 [[ -d /etc/openvpn/server ]] && rm -d /etc/openvpn/server
@@ -165,6 +202,9 @@ echo "# OVPN SERVER-UDP CONFIG
 port 994
 proto udp
 dev tun
+tun-mtu 1500
+tun-mtu-extra 32
+mssfix 1450
 
 ca /etc/openvpn/pki/ca.crt
 cert /etc/openvpn/pki/issued/server.crt
@@ -195,9 +235,6 @@ echo "# OVPN SERVER-TLS CONFIG
 port 587
 proto tcp
 dev tun
-tun-mtu 1500
-tun-mtu-extra 32
-mssfix 1450
 
 ca /etc/openvpn/pki/ca.crt
 cert /etc/openvpn/pki/issued/server.crt
@@ -223,7 +260,7 @@ log /var/log/openvpn/access.log
 verb 3
 mute 10
 plugin /usr/lib/x86_64-linux-gnu/openvpn/plugins/openvpn-plugin-auth-pam.so login
-username-as-common-name" > /etc/openvpn/server-tcp.conf
+username-as-common-name" > /etc/openvpn/server-tls.conf
 
 echo "# OVPN CLIENT-TCP CONFIG
 # ----------------------------
@@ -338,6 +375,7 @@ echo "</tls-auth>" >> /etc/openvpn/client-tls.conf
 sed -i 's/#AUTOSTART="all"/AUTOSTART="all"/g' /etc/default/openvpn
 systemctl start openvpn &>/dev/null
 systemctl enable openvpn &>/dev/null
+systemctl disable systemd-ask-password-wall.service
 echo -e "${GREEN}[ Selesai ]${PLAIN}"; cd
 
 ############################
@@ -390,44 +428,6 @@ refresh_pattern ^gopher: 1440 0% 1440
 refresh_pattern -i (/cgi-bin/|\?) 0	0% 0
 refresh_pattern . 0	20%	4320
 visible_hostname proxy.jokervpn.com" > /etc/squid/squid.conf
-echo -e "${GREEN}[ Selesai ]${PLAIN}"; cd
-
-##############################
-# INSTALL # STUNNEL4 PACKAGE #
-##############################
-echo -n "Pasang pakej stunnel... "; sleep 3
-apt-get -y -qq install stunnel &>/dev/null
-if [[ ! -d /etc/stunnel/pki ]]; then
-  mkdir /etc/stunnel/pki
-fi
-
-openssl req -new -x509 -days 720 -nodes \
--subj '/C=DO/ST=VPS/L=Debian/O="Cybertize"/OU="Joker VPN"/CN=jokervpn.com' \
--out /etc/stunnel/pki/stunnel.pem -keyout /etc/stunnel/pki/stunnel.pem &>/dev/null
-
-# /etc/stunnel/stunnel.conf
-echo "pid = /var/run/stunnel4/stunnel.pid
-output = /var/log/stunnel4/stunnel.log
-cert = /etc/stunnel/pki/stunnel.pem
-debug = 4
-client = no
-socket = l:TCP_NODELAY=1
-socket = r:TCP_NODELAY=1
-
-[dropbear]
-accept = 443
-connect = 127.0.0.1:143
-
-[openvpn]
-accept = 587
-connect = 127.0.0.1:1194" > /etc/stunnel/stunnel.conf
-
-# /etc/default/stunnel
-echo 'ENABLED=1
-FILES="/etc/stunnel/*.conf"
-OPTIONS=""
-PPP_RESTART=0
-RLIMITS=""' > /etc/default/stunnel4
 echo -e "${GREEN}[ Selesai ]${PLAIN}"; cd
 
 #################################
@@ -500,8 +500,6 @@ iptables -A INPUT -i tun+ -j ACCEPT
 iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
 
 iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
-iptables -A FORWARD -i tun+ -o eth0 -m state --state INVALID -j REJECT
-iptables -A FORWARD -i eth0 -o tun+ -m state --state INVALID -j REJECT
 iptables -A INPUT -m state --state INVALID -j REJECT
 
 iptables -A INPUT -m string --string "BitTorrent" --algo bm --to 65535 -j DROP
@@ -514,6 +512,9 @@ iptables -A INPUT -m string --string "announce" --algo bm --to 65535 -j DROP
 iptables -A INPUT -m string --string "info_hash" --algo bm --to 65535 -j DROP
 iptables -A INPUT -m string --string "get_peers" --algo bm --to 65535 -j DROP
 iptables -A INPUT -m string --string "find_node" --algo bm --to 65535 -j DROP
+
+iptables -A INPUT -p tcp -m connlimit --connlimit-above 15 --connlimit-mask 48 -j REJECT
+iptables -A INPUT -p udp -m connlimit --connlimit-above 12 --connlimit-mask 32 -j REJECT
 
 iptables -t mangle -A PREROUTING -m conntrack --ctstate INVALID -j DROP
 iptables -t mangle -A PREROUTING -p tcp -m conntrack --ctstate NEW -m tcpmss ! --mss 536:65535 -j DROP
@@ -531,8 +532,8 @@ iptables -t mangle -A PREROUTING -p tcp --tcp-flags ALL FIN,PSH,URG -j DROP
 iptables -t mangle -A PREROUTING -p tcp --tcp-flags ALL SYN,FIN,PSH,URG -j DROP
 iptables -t mangle -A PREROUTING -p tcp --tcp-flags ALL SYN,RST,ACK,FIN,URG -j DROP
 
-iptables -A INPUT -p tcp -m connlimit --connlimit-above 15 --connlimit-mask 48 -j REJECT
-iptables -A INPUT -p udp -m connlimit --connlimit-above 12 --connlimit-mask 32 -j REJECT
+iptables -A FORWARD -i tun+ -o eth0 -m state --state INVALID -j REJECT
+iptables -A FORWARD -i eth0 -o tun+ -m state --state INVALID -j REJECT
 
 iptables-save > /etc/firewall.rules
 echo "@reboot root iptables-restore < /etc/firewall.rules" >> /etc/crontab
