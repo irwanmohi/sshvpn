@@ -479,21 +479,6 @@ apt-get -y -qq install fail2ban &>/dev/null
 cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
 echo -e "${GREEN}[ Selesai ]${PLAIN}"; cd
 
-#################################
-# INSTALL # DDoS-Deflate
-#################################
-echo -n "Pasang ddos-deflate... "; sleep 3
-apt-get -y -qq install net-tools &>/dev/null
-apt-get -y -qq install tcpdump &>/dev/null
-apt-get -y -qq install dsniff &>/dev/null
-apt-get -y -qq install grepcidr &>/dev/null
-
-wget -O ddos.zip https://github.com/jgmdev/ddos-deflate/archive/master.zip &>/dev/null
-unzip ddos.zip &>/dev/null
-cd ddos-deflate-master
-./install.sh &>/dev/null
-echo -e "${GREEN}[ Selesai ]${PLAIN}"; cd
-
 ##############################
 # INSTALL # IPTABLES PACKAGE #
 ##############################
