@@ -1,4 +1,4 @@
-# Virtual Private Server [ JokerVPN ]
+# Virtual Private Server [ Cybertize-SSHVPN ]
 
 ## HOWTO
 
@@ -10,8 +10,8 @@ nano /etc/hostname
 ```
 or the easyway to change hostname by run this command:
 ```sh
-echo 'jokervpn.com' | tee /etc/hostname
-echo 'jokervpn.com' > /etc/hostname
+echo 'cybertize.devel' | tee /etc/hostname
+echo 'cybertize.devel' > /etc/hostname
 ```
 
 to check hostname enter this command on your terminal:
@@ -45,19 +45,15 @@ _What the script will do?_
 ### Packages list:
 | No.  | Packages      | Indexs                    |
 | ---- | :------------ | ------------------------- |
-| 01   | dropbear      | 1372(TCP), 2021(TLS)      |
+| 01   | dropbear      | 442(TCP), 443(TLS)      |
 | 02   | openvpn       | 1194(TCP), 994(UDP)       |
 | 03   | squid         | 8080 & 8000               |
-| 04   | stunnel       | 2021<->1372 & 2022<->1194 |
+| 04   | stunnel       | 443<->143 & 587<->1194 |
 | 05   | badvpn-udpwgw | 127.0.0.1 7300            |
 | 06   | nginx         | 80(HTTP) & 443(HTTPS)     |
 | 07   | webmin        | 10000                     |
 | 08   | fail2ban      |                           |
-| 09   | ddos-deflate  |                           |
-| 10   | iptables      |                           |
-
-
-
+| 09   | iptables      |                           |
 
 ### Plugins | Menu
 *plugins is a* __menu__ *to make it easier for:*
