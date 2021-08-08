@@ -10,23 +10,26 @@ GETIP=$( wget -qO- icanhazip.com );
 GETHOST=$( cat /etc/hostname );
 
 if [ "$EUID" -ne 0 ]; then
-  echo -e "${RED}Skrip perlu dijalankan sebagai root!${PLAIN}"; exit 1
+    echo -e "${RED}Skrip perlu dijalankan sebagai root!${PLAIN}"; exit 1
 fi
 
 . /etc/os-release
 if [[ $ID == "debian" ]]; then
-  if [[ $VERSION_ID -ne 10 ]]; then
-    echo -e "${RED}Skrip hanya boleh digunakan pada Debian 10 sahaja!${PLAIN}"; exit 3
-  fi
+    if [[ $VERSION_ID -ne 10 ]]; then
+        echo -e "${RED}Skrip hanya boleh digunakan pada Debian 10 sahaja!${PLAIN}"; exit 3
+    fi
 else
-  echo -e "${RED}Skrip hanya menyokong sistem operasi debian sahaja!${PLAIN}"; exit 2
+    echo -e "${RED}Skrip hanya menyokong sistem operasi debian sahaja!${PLAIN}"; exit 2
 fi
 
 echo ""
 echo "============================================================"
-echo -e "\t${YELLOW} ╦╔═╗╦╔═╔═╗╦═╗╦  ╦╔═╗╔╗╔${PLAIN}  OS: ${GREEN}Debian $VERSION_ID${PLAIN}";
-echo -e "\t${YELLOW} ║║ ║╠╩╗║╣ ╠╦╝╚╗╔╝╠═╝║║║${PLAIN}  IP: ${GREEN}$GETIP${PLAIN}";
-echo -e "\t${YELLOW}╚╝╚═╝╩ ╩╚═╝╩╚═ ╚╝ ╩  ╝╚╝${PLAIN}  HOST: ${GREEN}$GETHOST${PLAIN}";
+echo "   _______  ______  __________ _______________   ______";
+echo "  / ____\ \/ / __ )/ ____/ __ /_  __/  _/__  /  / ____/";
+echo " / /     \  / __  / __/ / /_/ // /  / /   / /  / __/   ";
+echo "/ /___   / / /_/ / /___/ _, _// / _/ /   / /__/ /___   ";
+echo "\____/  /_/_____/_____/_/ |_|/_/ /___/  /____/_____/   ";
+echo "                                                       ";
 echo "============================================================"
 echo ""
 
@@ -101,11 +104,11 @@ echo -e "${GREEN}[ Selesai ]${PLAIN}"; cd
 echo -n "Pasang pakej stunnel... "; sleep 3
 apt-get -y -qq install stunnel &>/dev/null
 if [[ ! -d /etc/stunnel/pki ]]; then
-  mkdir /etc/stunnel/pki
+    mkdir /etc/stunnel/pki
 fi
 
 openssl req -new -x509 -days 720 -nodes \
--subj '/C=DO/ST=VPS/L=Debian/O="Cybertize"/OU="Joker VPN"/CN=jokervpn.com' \
+-subj '/C=DO/ST=Droplet/L=Debian/O="Cybertize"/OU="Cybertize VPN Service"/CN=cybertize.devel' \
 -out /etc/stunnel/pki/stunnel.pem -keyout /etc/stunnel/pki/stunnel.pem &>/dev/null
 
 # /etc/stunnel/stunnel.conf
@@ -178,10 +181,10 @@ cache_store_log none
 cache_log /dev/null
 hierarchy_stoplist cgi-bin ?
 
-refresh_pattern ^ftp: 1440 20% 10080
+refresh_pattern ^ftp: 1440 20%	10080
 refresh_pattern ^gopher: 1440 0% 1440
-refresh_pattern -i (/cgi-bin/|\?) 0 0% 0
-refresh_pattern . 0 20% 4320
+refresh_pattern -i (/cgi-bin/|\?) 0	0% 0
+refresh_pattern . 0	20%	4320
 visible_hostname proxy.jokervpn.com" > /etc/squid/squid.conf
 echo -e "${GREEN}[ Selesai ]${PLAIN}"; cd
 
@@ -434,28 +437,28 @@ echo -e "${GREEN}[ Selesai ]${PLAIN}"; cd
 # INSTALL # NGINX PACKAGE
 #################################
 echo -n "Pasang pakej nginx... "; sleep 3
-[[ ! -d /var/www/cybertize.tk/public ]] && mkdir -p /var/www/cybertize.tk/public
+[[ ! -d /var/www/cybertize.devel/public ]] && mkdir -p /var/www/cybertize.devel/public
 apt-get -y -qq install nginx &>/dev/null
 cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 
 echo "<!doctype html>
 <html lang=\"en\">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset=\"utf-8\">
-    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset=\"utf-8\">
+        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
 
-    <!-- Bootstrap CSS -->
-    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css\">
+        <!-- Bootstrap CSS -->
+        <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css\">
 
-    <title>Joker VPN</title>
-  </head>
-  <body>
-    <h1><center>${GETHOST}</center></h1>
+        <title>Joker VPN</title>
+    </head>
+    <body>
+        <h1><center>${GETHOST}</center></h1>
 
-    <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js\"></script>
-  </body>
-</html>" > /var/www/cybertize.tk/public/index.html
+        <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js\"></script>
+    </body>
+</html>" > /var/www/cybertize.devel/public/index.html
 
 cp /etc/openvpn/client-tcp.conf /var/www/html/client-tcp.ovpn
 cp /etc/openvpn/client-udp.conf /var/www/html/client-udp.ovpn
@@ -543,36 +546,36 @@ cd
 # PLUGINS MENU #
 ################
 echo -n "Muat turun & aktifkan plugins... ";
-wget -q -O /usr/local/bin/menu https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/menu.sh
+wget -q -O /usr/local/bin/menu https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/menu.sh
 chmod +x /usr/local/bin/menu
 
 # ssh & ovpn
-wget -q -O /usr/local/bin/trial_user.sh https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/sshdovpn/trial_user.sh
-wget -q -O /usr/local/bin/create_user.sh https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/sshdovpn/create_user.sh
-wget -q -O /usr/local/bin/renew_user.sh https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/sshdovpn/renew_user.sh
-wget -q -O /usr/local/bin/login_users.sh https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/sshdovpn/login_users.sh
-wget -q -O /usr/local/bin/lists_user.sh https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/sshdovpn/lists_user.sh
-wget -q -O /usr/local/bin/limit_user.sh https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/sshdovpn/limit_user.sh
-wget -q -O /usr/local/bin/kick_user.sh https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/sshdovpn/kick_user.sh
-wget -q -O /usr/local/bin/kill_user.sh https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/sshdovpn/kill_user.sh
-wget -q -O /usr/local/bin/unlock_user.sh https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/sshdovpn/unlock_user.sh
-wget -q -O /usr/local/bin/lock_user.sh https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/sshdovpn/lock_user.sh
-wget -q -O /usr/local/bin/delete_user.sh https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/sshdovpn/delete_user.sh
+wget -q -O /usr/local/bin/trial_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/trial_user.sh
+wget -q -O /usr/local/bin/create_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/create_user.sh
+wget -q -O /usr/local/bin/renew_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/renew_user.sh
+wget -q -O /usr/local/bin/login_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/login_user.sh
+wget -q -O /usr/local/bin/lists_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/lists_user.sh
+wget -q -O /usr/local/bin/limit_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/limit_user.sh
+wget -q -O /usr/local/bin/kick_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/kick_user.sh
+wget -q -O /usr/local/bin/kill_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/kill_user.sh
+wget -q -O /usr/local/bin/unlock_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/unlock_user.sh
+wget -q -O /usr/local/bin/lock_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/lock_user.sh
+wget -q -O /usr/local/bin/delete_user.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/sshdovpn/delete_user.sh
 
 # service
-wget -q -O /usr/local/bin/check_service.sh https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/service/check_service.sh
-wget -q -O /usr/local/bin/detail_service.sh https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/service/detail_service.sh
-wget -q -O /usr/local/bin/ports_service.sh https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/service/ports_service.sh
-wget -q -O /usr/local/bin/restart_service.sh https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/service/restart_service.sh
+wget -q -O /usr/local/bin/check_service.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/service/check_service.sh
+wget -q -O /usr/local/bin/detail_service.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/service/detail_service.sh
+wget -q -O /usr/local/bin/ports_service.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/service/ports_service.sh
+wget -q -O /usr/local/bin/restart_service.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/service/restart_service.sh
 
 # server
-wget -q -O /usr/local/bin/domain_server.sh https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/server/domain_server.sh
-wget -q -O /usr/local/bin/backup_server.sh https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/server/backup_server.sh
-wget -q -O /usr/local/bin/restore_server.sh https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/server/restore_server.sh
+wget -q -O /usr/local/bin/domain_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/domain_server.sh
+wget -q -O /usr/local/bin/backup_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/backup_server.sh
+wget -q -O /usr/local/bin/restore_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/restore_server.sh
 wget -q -O /usr/local/bin/speedtest https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py
 chmod +x /usr/local/bin/speedtest
-wget -q -O /usr/local/bin/detail_server.sh https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/server/detail_server.sh
-wget -q -O /usr/local/bin/reboot_server.sh https://raw.githubusercontent.com/cybertize/sshvpn/default/plugins/server/reboot_server.sh
+wget -q -O /usr/local/bin/detail_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/detail_server.sh
+wget -q -O /usr/local/bin/reboot_server.sh https://raw.githubusercontent.com/cybertize/jokervpn/default/plugins/server/reboot_server.sh
 echo -e "${GREEN}[ Selesai ]${PLAIN}";
 
 echo -n "Memadam dan membersihkan fail... "; sleep 5
