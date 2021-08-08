@@ -22,7 +22,7 @@ cat /etc/hostname
 the script will read hostname as your default host/domain, so you need to edit and set hostname on your server. If you done with that, you can run the script by entering this command:
 ```sh
 # link script
-wget https://raw.githubusercontent.com/cybertize/jokervpn/default/install
+https://raw.githubusercontent.com/cybertize/cybertize-sshvpn/default/install
 
 # run script
 chmod +x install && ./install
