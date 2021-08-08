@@ -45,15 +45,14 @@ _What the script will do?_
 ### Packages list:
 | No.  | Packages      | Indexs                    |
 | ---- | :------------ | ------------------------- |
-| 01   | dropbear      | 442(TCP), 443(TLS)      |
-| 02   | openvpn       | 1194(TCP), 994(UDP)       |
-| 03   | squid         | 8080 & 8000               |
-| 04   | stunnel       | 443<->143 & 587<->1194 |
-| 05   | badvpn-udpwgw | 127.0.0.1 7300            |
-| 06   | nginx         | 80(HTTP) & 443(HTTPS)     |
-| 07   | webmin        | 10000                     |
-| 08   | fail2ban      |                           |
-| 09   | iptables      |                           |
+| 01   | dropbear      | 442(TCP), 443(TLS) |
+| 02   | openvpn       | 1194(TCP), 994(UDP), 587(TLS) |
+| 03   | squid         | 8080 & 8000 |
+| 05   | badvpn-udpwgw | 127.0.0.1 7300 |
+| 06   | nginx         | 80(HTTP) & 443(HTTPS) |
+| 07   | webmin        | 10000 |
+| 08   | fail2ban      | |
+| 09   | iptables      | |
 
 ### Plugins | Menu
 *plugins is a* __menu__ *to make it easier for:*
