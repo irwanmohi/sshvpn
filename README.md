@@ -10,8 +10,8 @@ nano /etc/hostname
 ```
 or the easyway to change hostname by run this command:
 ```sh
-echo 'cybertize.devel' | tee /etc/hostname
-echo 'cybertize.devel' > /etc/hostname
+echo 'cybertize.tk' | tee /etc/hostname
+echo 'cybertize.tk' > /etc/hostname
 ```
 
 to check hostname enter this command on your terminal:
